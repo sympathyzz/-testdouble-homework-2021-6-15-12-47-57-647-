@@ -47,6 +47,21 @@ public class PrinterTest {
         assertThat(systemOut().contains(Printer.STATEMENT_HEADER)).isTrue();
     }
 
+    @Test
+    public void should_print_execute_printStatementLines(){
+        //given
+        Console console = new Console();
+        Printer printer= new Printer(console);
+        String date="2021-06-16";
+        int amount=10;
+        String output="2021-06-16 | 10 | 10";
+        Transaction transaction = new Transaction(date,amount);
+        //when
+        printer.print(Arrays.asList(transaction));
+        //then
+        assertThat(systemOut().contains(output)).isTrue();
+    }
+
 
     private class SpyConsole extends Console{
         boolean hasPrintLine=false;
