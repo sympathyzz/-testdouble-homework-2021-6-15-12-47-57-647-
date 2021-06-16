@@ -12,7 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PrinterTest {
+    private static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
+    @BeforeAll
+    public static void setup() {
+        System.setOut(new PrintStream(outContent));
+    }
 
     @Test
     public void should_print_execute_printLine(){
@@ -28,6 +33,20 @@ public class PrinterTest {
         assertTrue(spyConsole.hasPrintLine);
     }
 
+    @Test
+    public void should_contain_STATEMENT_HEADER_execute_print(){
+        //given
+        Console console = new Console();
+        Printer printer= new Printer(console);
+        String date="2021-06-16";
+        int amount=10;
+        Transaction transaction = new Transaction(date,amount);
+        //when
+        printer.print(Arrays.asList(transaction));
+        //then
+        assertThat(systemOut().contains(Printer.STATEMENT_HEADER)).isTrue();
+    }
+
 
     private class SpyConsole extends Console{
         boolean hasPrintLine=false;
@@ -38,5 +57,7 @@ public class PrinterTest {
         }
     }
 
-
+    private String systemOut() {
+        return outContent.toString();
+    }
 }
