@@ -22,6 +22,19 @@ public class TransactionRepositoryTest {
         assertTrue(spyClock.hasExecuteTodayAsString);
     }
 
+    @Test
+    public void should_addWithdraw_execute_todayAsString(){
+        //given
+        SpyClock spyClock = new SpyClock();
+        int amount=10;
+        TransactionRepository transactionRepository=new TransactionRepository(spyClock);
+        //when
+        transactionRepository.addWithdraw(amount);
+        //then
+        assertTrue(spyClock.hasExecuteTodayAsString);
+    }
+
+
     private class SpyClock extends Clock{
         boolean hasExecuteTodayAsString=false;
 
